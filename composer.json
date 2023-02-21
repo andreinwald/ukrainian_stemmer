@@ -1,0 +1,10 @@
+{
+    "name": "andreinwald/ukrainian_stemmer",
+    "description": "Ukrainian stemmer",
+    "autoload": {
+        "psr-4": {
+            "UkrainianStemmer\\": "src/"
+        }
+    },
+    "require": {}
+}

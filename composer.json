@@ -1,6 +1,7 @@
 {
     "name": "andreinwald/ukrainian_stemmer",
     "description": "Ukrainian stemmer",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "UkrainianStemmer\\": "src/"

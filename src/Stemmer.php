@@ -18,7 +18,7 @@ class Stemmer
     const FIRST_VOWEL = '/^(.*?[аеиоуюяіїє])(.*)$/u';
     const FIRST_NON_VOWEL = '/^(.*?[^аеиоуюяіїє])(.*)$/u';
     const DERIVATIONAL = '/(ість)?$/u';
-    const SUPERLATIVE = '/(ейш|ейше)?$/u'; //TODO
+    const SUPERLATIVE = '/(іший|жчий|щий)?$/u'; // Порівняльний прикметник https://webpen.com.ua/pages/Morphology_and_spelling/adjectives_degrees_of_comparison.html#:~:text=%D0%92%D0%B8%D1%89%D0%B8%D0%B9%20%D1%81%D1%82%D1%83%D0%BF%D1%96%D0%BD%D1%8C%20%D0%BF%D0%BE%D1%80%D1%96%D0%B2%D0%BD%D1%8F%D0%BD%D0%BD%D1%8F%20%D0%BF%D1%80%D0%B8%D0%BA%D0%BC%D0%B5%D1%82%D0%BD%D0%B8%D0%BA%D1%96%D0%B2%20%D1%82%D0%B2%D0%BE%D1%80%D0%B8%D1%82%D1%8C%D1%81%D1%8F,%3A%20%D0%B1%D1%96%D0%BB%D1%8C%D1%88%20%D1%80%D0%BE%D0%B7%D0%B2%D0%B8%D0%BD%D0%B5%D0%BD%D0%B8%D0%B9%2C%20%D0%BC%D0%B5%D0%BD%D1%88%20%D1%81%D0%B2%D1%96%D1%82%D0%BB%D0%BE%D1%87%D1%83%D1%82%D0%BB%D0%B8%D0%B2%D0%B8%D0%B9.
 
     public static function stemWord(string $originalWord): string
     {
@@ -48,6 +48,7 @@ class Stemmer
             }
         }
 
+        $RV = preg_replace(self::SUPERLATIVE, '', $RV);
         $RV = self::step1($RV);
 
         /*
@@ -71,7 +72,6 @@ class Stemmer
             return $baseWithFirstVowel . $replaced;
         }
 
-        $RV = preg_replace(self::SUPERLATIVE, '', $RV);
         $RV = preg_replace('/нн$/u', 'н', $RV);
         return $baseWithFirstVowel . $RV;
     }

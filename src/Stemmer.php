@@ -9,7 +9,7 @@ namespace UkrainianStemmer;
  */
 class Stemmer
 {
-    const INFINITIVE = '/(ти|учи|ячи|вши|ши|ати|яти|ючи|)$/u';
+    const INFINITIVE = '/(ти|учи|ячи|вши|ши|ати|яти|ючи)$/u';
     const PERFECTIVEGROUND = '/(ив|ивши|ившись((?<=[ая])(в|вши|вшись)))$/u';
     const REFLEXIVE = '/(с[яьи])$/u';
     const ADJECTIVE = '/(ими|ій|ий|а|е|ова|ове|ів|є|їй|єє|еє|я|ім|ем|им|их|іх|ою|йми|іми|у|ю|ого|ому|ої)$/u';

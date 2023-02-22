@@ -9,7 +9,6 @@ namespace UkrainianStemmer;
  */
 class Stemmer
 {
-    const INFINITIVE = '/(ти|учи|ячи|вши|ши|ати|яти|ючи)$/u';
     const PERFECTIVE_GROUND = '/(ив|ивши|ившись((?<=[ая])(в|вши|вшись)))$/u';
     const REFLEXIVE = '/(ся)$/u'; // Рефлексивне дієслово  https://www.wiki-data.uk-ua.nina.az/%D0%A0%D0%B5%D1%84%D0%BB%D0%B5%D0%BA%D1%81%D0%B8%D0%B2%D0%BD%D0%B5_%D0%B4%D1%96%D1%94%D1%81%D0%BB%D0%BE%D0%B2%D0%BE.html
     const ADJECTIVE = '/(ими|ій|ий|а|е|ова|ове|ів|є|їй|єє|еє|я|ім|ем|им|их|іх|ою|йми|іми|у|ю|ого|ому|ої)$/u';
@@ -24,10 +23,6 @@ class Stemmer
     public static function stemWord(string $originalWord): string
     {
         $originalWord = mb_strtolower($originalWord);
-
-        if (preg_match(self::INFINITIVE, $originalWord)) {
-            return $originalWord;
-        }
 
         preg_match(self::FIRST_VOWEL, $originalWord, $matches);
         if (!$matches) {

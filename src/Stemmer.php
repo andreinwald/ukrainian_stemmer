@@ -11,10 +11,10 @@ class Stemmer
 {
     const INFINITIVE = '/(ти|учи|ячи|вши|ши|ати|яти|ючи)$/u';
     const PERFECTIVE_GROUND = '/(ив|ивши|ившись((?<=[ая])(в|вши|вшись)))$/u';
-    const REFLEXIVE = '/(с[яьи])$/u';
+    const REFLEXIVE = '/(ся)$/u'; // Рефлексивне дієслово  https://www.wiki-data.uk-ua.nina.az/%D0%A0%D0%B5%D1%84%D0%BB%D0%B5%D0%BA%D1%81%D0%B8%D0%B2%D0%BD%D0%B5_%D0%B4%D1%96%D1%94%D1%81%D0%BB%D0%BE%D0%B2%D0%BE.html
     const ADJECTIVE = '/(ими|ій|ий|а|е|ова|ове|ів|є|їй|єє|еє|я|ім|ем|им|их|іх|ою|йми|іми|у|ю|ого|ому|ої)$/u';
     const PARTICIPLE = '/(ий|ого|ому|им|ім|а|ій|у|ою|і|их|йми)$/u';
-    const VERB_ENDING = '/(сь|ся|ив|ать|ять|у|ю|ав|али|учи|ячи|вши|ши|е|ме|ати|яти|є)$/u';
+    const VERB_ENDING = '/(сь|ся|ив|ать|ять|у|ю|ав|али|учи|ячи|вши|ши|е|ме|ати|яти|є)$/u'; // Дієслово https://webpen.com.ua/pages/Morphology_and_spelling/verb_declination_present_simple_future_tenses.html
     const NOUN_ENDING = '/(а|ев|ов|е|ями|ами|еи|и|ей|ой|ий|й|иям|ям|ием|ам|ом|о|у|ах|иях|ях|ию|ью|ю|ия|ья|я|і|ові|ї|ею|єю|ою|є|еві|ем|єм|ів|їв|\'ю)$/u'; // w/o ь
     const FIRST_VOWEL = '/^(.*?[аеиоуюяіїє])(.*)$/u';
     const FIRST_NON_VOWEL = '/^(.*?[^аеиоуюяіїє])(.*)$/u';

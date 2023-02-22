@@ -17,25 +17,39 @@ class Stemmer
     const VERB_ENDING = '/(сь|ся|ив|ать|ять|у|ю|ав|али|учи|ячи|вши|ши|е|ме|ати|яти|є)$/u';
     const NOUN_ENDING = '/(а|ев|ов|е|ями|ами|еи|и|ей|ой|ий|й|иям|ям|ием|ам|ом|о|у|ах|иях|ях|ь|ию|ью|ю|ия|ья|я|і|ові|ї|ею|єю|ою|є|еві|ем|єм|ів|їв|\'ю)$/u';
     const FIRST_VOWEL = '/^(.*?[аеиоуюяіїє])(.*)$/u';
-    const DERIVATIONAL = '/[^аеиоуюяіїє][аеиоуюяіїє]+[^аеиоуюяіїє]+[аеиоуюяіїє].*сть?$/u';
+    const FIRST_NON_VOWEL = '/^(.*?[^аеиоуюяіїє])(.*)$/u';
+    const DERIVATIONAL = '/(ість|іст)?$/u';
 
-    public static function stemWord(string $word): string
+    public static function stemWord(string $originalWord): string
     {
-        $stem = mb_strtolower($word);
+        $originalWord = mb_strtolower($originalWord);
 
-        if (preg_match(self::INFINITIVE, $word)) {
-            return $word;
+        if (preg_match(self::INFINITIVE, $originalWord)) {
+            return $originalWord;
         }
 
-        preg_match(self::FIRST_VOWEL, $stem, $matches);
+        preg_match(self::FIRST_VOWEL, $originalWord, $matches);
         if (!$matches) {
-            return $word;
+            return $originalWord;
         }
         // RV is the region after the first vowel, or the end of the word if it contains no vowel.
         $RV = $matches[2];
         $baseWithFirstVowel = $matches[1];
         if (!mb_strlen($baseWithFirstVowel) || !mb_strlen($RV)) {
-            return $word;
+            return $originalWord;
+        }
+
+        // R1 is the region after the first non-vowel following a vowel, or the end of the word if there is no such non-vowel.
+        // R2 is the region after the first non-vowel following a vowel in R1, or the end of the word if there is no such non-vowel.
+        $R1 = false;
+        $R2 = false;
+        preg_match(self::FIRST_NON_VOWEL, $RV, $matches);
+        if ($matches) {
+            $R1 = $matches[2];
+            preg_match(self::FIRST_NON_VOWEL, $R1, $matches);
+            if ($matches) {
+                $R2 = $matches[2];
+            }
         }
 
         $RV = self::step1($RV);
@@ -48,8 +62,8 @@ class Stemmer
         /*
          * Step 3: Search for a DERIVATIONAL ending in R2 (i.e. the entire ending must lie in R2), and if one is found, remove it.
          */
-        if (preg_match(self::DERIVATIONAL, $RV)) {
-            $RV = preg_replace('/ість?$/u', '', $RV);
+        if ($R2 && preg_match(self::DERIVATIONAL, $R2)) {
+            $RV = preg_replace(self::DERIVATIONAL, '', $RV);
         }
 
         /*

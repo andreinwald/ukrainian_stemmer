@@ -19,6 +19,7 @@ class Stemmer
     const FIRST_VOWEL = '/^(.*?[аеиоуюяіїє])(.*)$/u';
     const FIRST_NON_VOWEL = '/^(.*?[^аеиоуюяіїє])(.*)$/u';
     const DERIVATIONAL = '/(ість|іст)?$/u';
+    const SUPERLATIVE = '/(ейш|ейше)?$/u'; //TODO
 
     public static function stemWord(string $originalWord): string
     {
@@ -70,14 +71,13 @@ class Stemmer
          * Step 4: (1) Undouble н (n), or, (2) if the word ends with a SUPERLATIVE ending, remove it and undouble н (n),
          * or (3) if the word ends ь (') (soft sign) remove it.
          */
-        $m = preg_replace('/ь?$/u', '', $RV);
-        if (strcmp($m, $RV) === 0) {
-            $RV = preg_replace('/ейше?/u', '', $RV);
-            $RV = preg_replace('/нн$/u', 'н', $RV);
-        } else {
-            $RV = $m;
+        $replaced = preg_replace('/ь?$/u', '', $RV);
+        if ($replaced && $replaced != $RV) {
+            return $baseWithFirstVowel . $replaced;
         }
 
+        $RV = preg_replace(self::SUPERLATIVE, '', $RV);
+        $RV = preg_replace('/нн$/u', 'н', $RV);
         return $baseWithFirstVowel . $RV;
     }
 

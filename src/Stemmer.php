@@ -48,7 +48,7 @@ class Stemmer
             }
         }
 
-        $RV = preg_replace(self::SUPERLATIVE, '', $RV);
+        $RV = preg_replace(self::SUPERLATIVE, '', $RV); // moved earlier bc ADJECTIVE also have 'ий'
         $RV = self::step1($RV);
 
         /*

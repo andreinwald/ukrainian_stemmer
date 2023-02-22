@@ -16,3 +16,8 @@ $short = Stemmer::stemWord('український');
 
 echo $short; // will display "українськ"
 ```
+
+## Tests
+| Original | Stemmed | Type of ending | Check |
+| --- | --- | --- | --- |
+| можливого | можлив | DERIVATIONAL | можливу, можливість |

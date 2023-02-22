@@ -16,31 +16,24 @@ class Stemmer
     const PARTICIPLE = '/(ий|ого|ому|им|ім|а|ій|у|ою|і|их|йми)$/u';
     const VERB = '/(сь|ся|ив|ать|ять|у|ю|ав|али|учи|ячи|вши|ши|е|ме|ати|яти|є)$/u';
     const NOUN = '/(а|ев|ов|е|ями|ами|еи|и|ей|ой|ий|й|иям|ям|ием|ам|ом|о|у|ах|иях|ях|ь|ию|ью|ю|ия|ья|я|і|ові|ї|ею|єю|ою|є|еві|ем|єм|ів|їв|\'ю)$/u';
-    const RVRE = '/^(.*?[аеиоуюяіїє])(.*)$/u';
+    const FIRSTVOWEL = '/^(.*?[аеиоуюяіїє])(.*)$/u';
     const DERIVATIONAL = '/[^аеиоуюяіїє][аеиоуюяіїє]+[^аеиоуюяіїє]+[аеиоуюяіїє].*сть?$/u';
 
     public static function stemWord(string $word): string
     {
         $stem = mb_strtolower($word);
 
-        // check if infinitive
-        $m = preg_replace(self::INFINITIVE, '', $word);
-        if (strcmp($m, $word) !== 0) {
+        if (preg_match(self::INFINITIVE, $word)) {
             return $word;
         }
 
-        preg_match_all(self::RVRE, $stem, $p);
-        if (!$p) {
+        preg_match(self::FIRSTVOWEL, $stem, $matches);
+        if (!$matches) {
             return $word;
         }
-
-        if (empty($p[2]) || empty($p[1][0])) {
-            return $word;
-        }
-        $start = $p[1][0];
-
         // RV is the region after the first vowel, or the end of the word if it contains no vowel.
-        $RV = $p[2][0];
+        $RV = $matches[2][0];
+        $baseWithFirstVowel = $matches[1][0];
 
         /*
          * Step 1: Search for a PERFECTIVE GERUND ending. If one is found remove it, and that is then the end of step 1.
@@ -90,7 +83,7 @@ class Stemmer
             $RV = $m;
         }
 
-        $stem = $start . $RV;
+        $stem = $baseWithFirstVowel . $RV;
 
         return $stem;
     }
